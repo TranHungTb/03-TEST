@@ -1,5 +1,5 @@
  
-const String myphone = "0966810905";     // Thay so cua ban vao day
+const String myphone = "092903445";     // Thay so cua ban vao day
                        // Chan so 9 arduino uno dung lam chan dieu khien bat tat module sim900A
 const int RELAY =  13;                              // Chan so 12 arduino uno dung lam chan dieu khien dong/cat Relay de On/Off den
  
@@ -28,7 +28,7 @@ void setup() {
 //  Gsm_Power_On();                                      // Bat Module Sim 900A
   delay(10000);
   Gsm_Init();                                                 // Cau hinh module Sim 900A
-//  Gsm_MakeCall(myphone);                          // Test cuoc goi 
+  Gsm_MakeCall(myphone);                          // Test cuoc goi 
   Gsm_MakeSMS(myphone,"I'm a test");       // Test tin nhan
 }
  

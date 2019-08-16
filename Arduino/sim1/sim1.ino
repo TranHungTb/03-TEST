@@ -6,7 +6,7 @@ SoftwareSerial GSMSerial(15,14);    // RX, TX
 void setup()
 {
 
-     GSMSerial.begin(19200);
+     GSMSerial.begin(9600);
      Serial.begin(9600);
      Serial.println("START");
 }
