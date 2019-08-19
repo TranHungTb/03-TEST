@@ -1,7 +1,7 @@
 
 
 
-const String myphone[3] = {"0929034450","092903445","929034450"};
+const String myphone[3] = {"0929034450","092903445","929034450"}; //danh sách số điện thoại
 int RELAY =  13;  
 int mic,i;                                           // Bat module Sim 900A
 void Gsm_Init();                                                       // Cau hinh Module Sim 900A
@@ -18,34 +18,38 @@ void Gsm_MakeSMS(String phone,String content);     // Ham nhan tin
                                     // Bat Module Sim 900A
   delay(10000);
   Gsm_Init();                         // Cau hinh module Sim 900A
-  Gsm_MakeCall(myphone[1]);                          // Test cuoc goi 
-  Gsm_MakeSMS(myphone[2],"I'm a test");       // Test tin nhan
+  Gsm_MakeCall(myphone[0]);                          // Test cuoc goi 
+  Gsm_MakeSMS(myphone[0],"I'm a test");       // Test tin nhan
 }
 
 
 void loop() {
-  delay(1000); 
-  for(i=0;i<3;i++){
-    
-  Gsm_MakeCall(myphone[i]);
-  delay(1000); 
-  }
-  // tre 1s 
-//  mic = analogRead(A0);                          
-//  Serial.print("mic: "); 
-//  Serial.println(mic);             
-//  if(mic >= 700)                                            
-//  {                                                    
-//    digitalWrite(RELAY, HIGH);                          // Bat bong den
-//    Gsm_MakeSMS(myphone,"on qua noi nho di!");
-//    
+//  delay(1000); 
+//  for(i=0;i<3;i++){
+//  delay(1000);   
+//  Gsm_MakeCall(myphone[i]);
+//  delay(1000); 
 //  }
-//  else
-//  {                           
-//                                        
-//      digitalWrite(RELAY, LOW);               // Cat Relay de tat den
-//    }
-// 
+   delay(1000);                  //tre 1s 
+  mic = analogRead(A0);                          
+  Serial.print("mic: "); 
+  Serial.println(mic);             
+  if(mic >= 700)                                            
+  {                                                    
+    digitalWrite(RELAY, HIGH);                          // Bat bong den
+     delay(1000); 
+      for(i=0;i<3;i++){
+      delay(1000);   
+      Gsm_MakeSMS(myphone[i],"Noi nho di."); 
+    
+  }
+  }
+  else
+  {                           
+                                        
+      digitalWrite(RELAY, LOW);               // Cat Relay de tat den
+    }
+ 
 }
  
 //void serialEvent() {                                          // Chuong trinh ngat nhan du lieu
@@ -86,9 +90,11 @@ void Gsm_MakeCall(String phone)
 void Gsm_MakeSMS(String phone,String content)
 {
   Serial.println("AT+CMGS=\"" + phone + "\"");     // Lenh gui tin nhan
-  delay(3000);                                                     // Cho ky tu '>' phan hoi ve 
+  delay(2000);                                                     // Cho ky tu '>' phan hoi ve 
   Serial.print(content);                                          // Gui noi dung
-  Serial.print((char)26);                                         // Gui Ctrl+Z hay 26 de ket thuc noi dung tin nhan va gui tin di
-  delay(5000);                                                      // delay 5s
+  delay(2000);
+  Serial.println((char)26);                                         // Gui Ctrl+Z hay 26 de ket thuc noi dung tin nhan va gui tin di
+  
+  delay(2000);                                                      // delay 5s
 }
  
