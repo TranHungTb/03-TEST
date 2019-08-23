@@ -6,7 +6,7 @@ SoftwareSerial mySerial(3, 2); //SIM800L Tx & Rx is connected to Arduino #3 & #2
 void setup()
 {
   //Begin serial communication with Arduino and Arduino IDE (Serial Monitor)
-  Serial.begin(9600);
+  Serial.begin(96000);
   
   //Begin serial communication with Arduino and SIM800L
   mySerial.begin(9600);
