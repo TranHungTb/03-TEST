@@ -12,23 +12,23 @@ void setup()
   mySerial.begin(9600);
 
   Serial.println("Initializing...");
-  delay(1000);
-
-  mySerial.println("AT"); //Once the handshake test is successful, it will back to OK
-  updateSerial();
-  mySerial.println("ATE1");
-  updateSerial();
-  mySerial.println("AT+CSQ"); //Kiểm tra chất lượng tín hiệu, phạm vi giá trị là 0-31, 31 là tốt nhất
-  updateSerial();
-  mySerial.println("AT+CCID"); //Đọc thông tin SIM để xác nhận xem SIM đã được cắm chưa
-  updateSerial();
-  mySerial.println("AT+CREG?"); //Kiểm tra xem nó đã đăng ký trong mạng chưa
-  updateSerial();
+//  delay(1000);
+//
+//  mySerial.println("AT"); //Once the handshake test is successful, it will back to OK
+//  updateSerial();
+//  mySerial.println("ATE1");
+//  updateSerial();
+//  mySerial.println("AT+CSQ"); //Kiểm tra chất lượng tín hiệu, phạm vi giá trị là 0-31, 31 là tốt nhất
+//  updateSerial();
+//  mySerial.println("AT+CCID"); //Đọc thông tin SIM để xác nhận xem SIM đã được cắm chưa
+//  updateSerial();
+//  mySerial.println("AT+CREG?"); //Kiểm tra xem nó đã đăng ký trong mạng chưa
+//  updateSerial();
 }
 
 void loop()
 {
-  updateSerial();
+//  updateSerial();
 //  Serial.println(Serial.read());
 }
 
@@ -37,7 +37,7 @@ void updateSerial()
   delay(500);
   while (Serial.available()) 
   {
-    mySerial.write(Serial.read());//Forward what Serial received to Software Serial Port
+    Serial.write(Serial.read());//Forward what Serial received to Software Serial Port
    delay(2000);
   }
   while(mySerial.available()) 
