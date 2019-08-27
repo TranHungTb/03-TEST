@@ -1,7 +1,7 @@
 #include <SoftwareSerial.h>
 #define DEBUG true
  
-SoftwareSerial esp8266(10, 11); //  10-RX, 11-TX 
+SoftwareSerial esp8266(2,3); //  10-RX, 11-TX 
 char x;
 void setup() {
   Serial.begin(9600);

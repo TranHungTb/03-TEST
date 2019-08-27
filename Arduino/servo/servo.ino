@@ -50,7 +50,7 @@ void setup ()
  
 void loop ()
 {
-   for ( pos = 0; pos <= 180; pos += 5) {
+   for ( pos = 0; pos <= 180; pos += 1) {
  
     myservo.write(pos);
     Serial.print("Pos= ");
@@ -59,7 +59,7 @@ void loop ()
     delay(100);
    
   }
-  for ( pos = 180; pos >= 0; pos -= 5) {
+  for ( pos = 180; pos >= 0; pos -= 1) {
     myservo.write(pos);
     Serial.print("Pos= ");
     Serial.print(pos);

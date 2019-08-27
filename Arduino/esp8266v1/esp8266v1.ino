@@ -67,12 +67,15 @@ void loop()
  
 void initESP8266()
 {
-  deliverMessage("AT+RST", E360_DELAY_2X);
-  deliverMessage("AT+CWMODE=2", E360_DELAY_3X);
-  deliverMessage("AT+CWSAP=\"Arduino\",\"123456789\",1,4", E360_DELAY_3X);
-  deliverMessage("AT+CIFSR", E360_DELAY_1X);
-  deliverMessage("AT+CIPMUX=1", E360_DELAY_1X); // để cho phép các kết nối TCP
-  deliverMessage(String("AT+CIPSERVER=1,") + E360_PROTOCOL_CURRENT, E360_DELAY_1X);  //để tạo 1 TCP server
+  deliverMessage("AT\r\n", E360_DELAY_2X);
+  deliverMessage("AT+RST\r\n", E360_DELAY_2X);
+  deliverMessage("AT+CWMODE=2\r\n", E360_DELAY_3X);
+  deliverMessage("AT+CWDHCP=0,1\r\n", E360_DELAY_3X);
+  deliverMessage("AT+CWSAP=\"Arduino\",\"123456789\",1,4\r\n", E360_DELAY_3X);
+  deliverMessage("AT+CIFSR\r\n", E360_DELAY_1X);
+  deliverMessage("AT+CIPMODE=0\r\n", E360_DELAY_1X);
+  deliverMessage("AT+CIPMUX=1\r\n", E360_DELAY_2X); // để cho phép các kết nối TCP
+  deliverMessage(String("AT+CIPSERVER=1,\r\n") + E360_PROTOCOL_CURRENT, E360_DELAY_2X);  //để tạo 1 TCP server
 }
  
 void bufferingRequest(char c)
