@@ -28,7 +28,7 @@ void setup()
 
 void loop()
 {
-//  updateSerial();
+  updateSerial();
 //  Serial.println(Serial.read());
 }
 
@@ -37,12 +37,12 @@ void updateSerial()
   delay(500);
   while (Serial.available()) 
   {
-    Serial.write(Serial.read());//Forward what Serial received to Software Serial Port
-   delay(2000);
+    mySerial.write(Serial.read());//Forward what Serial received to Software Serial Port
+
   }
   while(mySerial.available()) 
   {
     Serial.write(mySerial.read());//Forward what Software Serial received to Serial Port
-    delay(2000);
+
   }
 }

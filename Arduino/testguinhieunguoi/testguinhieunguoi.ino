@@ -1,4 +1,4 @@
-const String numberPhones[] = {"0929034450"}; //danh sách số điện thoại
+const String numberPhones[] = {"0793187508"}; //danh sách số điện thoại
 
 #define NUMITEMS(arg) ((unsigned int) (sizeof (arg) / sizeof (arg [0])))
 

@@ -1,33 +1,32 @@
- 
-const String myphone = "092903445";     // Thay so cua ban vao day
-                       // Chan so 9 arduino uno dung lam chan dieu khien bat tat module sim900A
+const String myphone = "0972154901";     // Thay so cua ban vao day
+const int PWR_KEY =  9;                          // Chan so 9 arduino uno dung lam chan dieu khien bat tat module sim800C
 const int RELAY =  13;                              // Chan so 12 arduino uno dung lam chan dieu khien dong/cat Relay de On/Off den
  
-String RxBuff = "";                     // Khai bao bo dem nhan du lieu
-                                     // Tat ca du lieu nhan ve tu module sim deu duoc luu trong day 
+String RxBuff = "";                                    // Khai bao bo dem nhan du lieu
+                                                                // Tat ca du lieu nhan ve tu module sim deu duoc luu trong day 
  
 int Index_Lamp_On = -1;                           // vi tri cua chuoi "LAMP_ON"
 int Index_Lamp_Off = -1;                           // vi tri cua chuoi "LAMP_OFF"
  
-void Gsm_Power_On();                                            // Bat module Sim 900A
-void Gsm_Init();                                                       // Cau hinh Module Sim 900A
+void Gsm_Power_On();                                            // Bat module Sim800C
+void Gsm_Init();                                                       // Cau hinh Module Sim800C
 void Gsm_MakeCall(String phone);                            // Ham goi dien
 void Gsm_MakeSMS(String phone,String content);     // Ham nhan tin
  
  
 void setup() {
-  Serial.begin(9600);                           // Cau hinh UART de giao tiep module Sim 900A
+  Serial.begin(9600);                           // Cau hinh UART de giao tiep module Sim800C
  
   digitalWrite(RELAY, LOW);               // Khai bao chan  de dieu khien dong cat RELAY
   pinMode(RELAY, OUTPUT);
-// 
-//  digitalWrite(PWR_KEY, LOW);         // Khai bao chan PWR_KEY de dieu khien bat bat module Sim 900A
-//  pinMode(PWR_KEY, OUTPUT);
+ 
+  digitalWrite(PWR_KEY, LOW);         // Khai bao chan PWR_KEY de dieu khien bat bat module Sim800C
+  pinMode(PWR_KEY, OUTPUT);
   
-//  delay(1000);                       
-//  Gsm_Power_On();                                      // Bat Module Sim 900A
-  delay(10000);
-  Gsm_Init();                                                 // Cau hinh module Sim 900A
+  delay(1000);                       
+  Gsm_Power_On();                                      // Bat Module Sim800C
+  delay(50000);                                              // Đợi module sim kiểm tra kết nối mạng GSM     
+  Gsm_Init();                                                 // Cau hinh module Sim800C
   Gsm_MakeCall(myphone);                          // Test cuoc goi 
   Gsm_MakeSMS(myphone,"I'm a test");       // Test tin nhan
 }
@@ -65,13 +64,13 @@ void serialEvent() {                                          // Chuong trinh ng
   }
 }
  
-//void Gsm_Power_On()
-//{
-//  digitalWrite(PWR_KEY, HIGH);                // Du chan PWR_KEY len cao it nhat 1s 
-//  delay(1500);                                            // o day ta de 1,5s
-//  digitalWrite(PWR_KEY, LOW);                  // Du chan PWR_KEY xuong thap
-//  delay(100);                                              // cac ban xem trong Hardware designed sim900A de hieu ro hon
-//}
+void Gsm_Power_On()
+{
+  digitalWrite(PWR_KEY, HIGH);                // Du chan PWR_KEY len cao it nhat 1s 
+  delay(1500);                                            // o day ta de 1,5s
+  digitalWrite(PWR_KEY, LOW);                  // Du chan PWR_KEY xuong thap
+  delay(100);                                              // cac ban xem trong Hardware designed sim800C de hieu ro hon
+}
  
 void Gsm_Init()
 {
@@ -103,4 +102,3 @@ void Gsm_MakeSMS(String phone,String content)
   Serial.print((char)26);                                         // Gui Ctrl+Z hay 26 de ket thuc noi dung tin nhan va gui tin di
   delay(5000);                                                      // delay 5s
 }
- 
