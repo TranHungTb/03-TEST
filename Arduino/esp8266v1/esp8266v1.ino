@@ -25,7 +25,7 @@ bool hasRequest = false;
 void setup()
 {
   delay(E360_DELAY_0X);
-  Serial.begin(115200);
+  Serial.begin(9600);
   
   pinMode(LED_PIN, OUTPUT); 
   digitalWrite(LED_PIN, LOW);

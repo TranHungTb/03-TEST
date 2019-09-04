@@ -8,7 +8,7 @@ SoftwareSerial mySerial(2, 3); //SIM800L Tx & Rx is connected to Arduino #3 & #2
 
 
 
-const String myphone = "0972154901";     // Thay so cua ban vao day
+const String myphone = "0929034450";     // Thay so cua ban vao day
 const int RELAY =  13;                              // Chan so 12 arduino uno dung lam chan dieu khien dong/cat Relay de On/Off den
 
 String RxBuff = "";                                    // Khai bao bo dem nhan du lieu
@@ -46,9 +46,9 @@ void setup()
 
 
   Gsm_Init();                                                 // Cau hinh module Sim800C
-  Gsm_MakeCall(myphone);                          // Test cuoc goi
+//  Gsm_MakeCall(myphone);                          // Test cuoc goi
   // Gsm_MakeSMS(myphone,"I'm a test");       // Test tin nhan
-  //  ConnectServer("138.197.46.187", "1346");
+//  ConnectServer("138.197.46.187", "1346");
   //  mySerial.println("at+cipstart=\"tcp\",\"138.197.46.187\",\"1349\"");
   //  delay(2000);
 
@@ -58,7 +58,6 @@ void setup()
 }
 
 void loop() {
-
   serialEvent();                                                                    // tre 1s
   Index_Lamp_On = returned.indexOf("time");              // Tim vi tri cua chuoi "LAMP_ON" trong bo dem nhan RxBuff
 
@@ -73,8 +72,7 @@ void loop() {
     Serial.println("Gửi tin lấy giờ lên server");
     times:
     returned = "";
-    ConnectServer("138.197.46.187", "1349");
-    
+    ConnectServer("138.197.46.187","1349");   
     Makesendserver("times");
     serialEvent();   
     Index = returned.indexOf("GMT");
@@ -119,6 +117,7 @@ void serialEvent() {                                          // Chuong trinh ng
     returned = "";
     }
   }
+  
 }
 
 
@@ -215,27 +214,62 @@ void ConnectServer(String ip, String port)    //kết nối tới server
     returned = "";
     }
   
-  mySerial.println("AT+CIPMUX=1");     // Cài Sim800A ở chế độ Single Connection.
+  mySerial.println("AT+CIPMUX?");     // Cài Sim800A ở chế độ Single Connection.
   delay(2000);
   updateSerial();
   mySerial.println("AT+CIPMode?");   //Bắt đầu tác vụ và đặt APN, TÊN NGƯỜI DÙNG, PASSWORD
   delay(2000);
   updateSerial();
-  mySerial.println("AT+CSTT=\"CMNET\"");   //;Bắt đầu tác vụ và đặt APN, TÊN NGƯỜI DÙNG, PASSWORD
-  delay(2000);
-  updateSerial();
-  mySerial.println("AT+CIICR");   //Kết nối không dây với GPRS
-  delay(2000);
-  updateSerial();
+//  runUtilOk("AT+CSTT=\"CMNET\"","OK",2000);  //;Bắt đầu tác vụ và đặt APN, TÊN NGƯỜI DÙNG, PASSWORD
+  runUtilOk("AT+CIICR","OK",2000);   //Kết nối không dây với GPRS
   mySerial.println("AT+CIFSR");   //Nhận địa chỉ IP cục bộ
   delay(2000);
   updateSerial();
   //  chaylai();
-  runUtilOk("AT+CIPSTART=\"TCP\",\"" + ip + "\",\"" + port + "\"", "server", 5000); //Kết nối với Server theo TCP, Sim800A đóng vai trò TCP Client
+  ip:
+  mySerial.println("AT+CIPSTART=\"TCP\",\"" + ip + "\",\"" + port + "\"");   //Kết nối với Server theo TCP, Sim800A đóng vai trò TCP Client
+  delay(2000);;
+  serialEvent();   
+  Index = returned.indexOf("OK");
+  if (Index >= 0)                   // Neu tim thay
+  {
+    Index = -1; 
+    digitalWrite(RELAY, LOW);                                           
+    Serial.println("Thành công: " + returned);  
+    returned = "";                        // Xoa bo dem
+    delay(3000);
+    serialEvent();   
+    Index = returned.indexOf("CONNECT OK");
+    if (Index >= 0)                   // Neu tim thay 
+    {
+      Index = -1; 
+      digitalWrite(RELAY, LOW);                                           
+      Serial.println("Connect Ok: " + returned);  
+      returned = "";         
+    }
+    else
+    {
+      Index = -1; 
+      digitalWrite(RELAY, HIGH); 
+      Serial.println("Thất bại, gửi lại: " + returned);
+      returned = "";
+      goto ip;
+    }
+  }
+  else
+    {
+    Index = -1; 
+    digitalWrite(RELAY, HIGH); 
+    Serial.println("Thất bại, gửi lại: " + returned);
+    returned = "";
+    goto ip;
+    }
+//  runUtilOk("AT+CIPSTART=\"TCP\",\"" + ip + "\",\"" + port + "\"", "server", 5000); 
 }
 
 void disconnected()
 {
+  runUtilOk("AT+CGATT=0", "OK", 2000);
   runUtilOk("AT+CIPCLOSE", "OK", 2000);
   runUtilOk("AT+CIPSHUT", "OK", 2000);
 }

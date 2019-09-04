@@ -69,6 +69,7 @@ void IncomingChar(const byte InChar) {
 
 void ProcessCommand(String InLine) {
   Serial.println("InLine: " + InLine);
+  esp8266.print("InLine: " + InLine);
 
   if (InLine.startsWith("+IPD,")) {
 
@@ -106,6 +107,7 @@ String guidulieu(String lenh,
 
   if (debug) {
     Serial.print(chuoigiatri);
+    esp8266.print(chuoigiatri);
   }
 
   return chuoigiatri;
