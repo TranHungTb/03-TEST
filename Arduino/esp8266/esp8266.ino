@@ -1,114 +1,91 @@
-#include <SoftwareSerial.h>
-#define DEBUG true
+#include <SocketIOClient.h>
+#include <ESP8266WiFi.h>
+ 
+SocketIOClient client;
+const char* ssid = "GFD Office Network";          //Tên mạng Wifi mà Socket server của bạn đang kết nối
+const char* password = "gfd@1352468";  //Pass mạng wifi ahihi, anh em rãnh thì share pass cho mình với.
 
-SoftwareSerial esp8266(2, 3); //  10-RX, 11-TX
-char x;
-void setup() {
-  Serial.begin(9600);
-  esp8266.begin(9600); // chu y phai cung toc do voi ESP 8266
+//const char* ssid = "Redmi"; 
+//const char* password = "1234567899";  
 
-  pinMode(13, OUTPUT); // tuong tu chan 12
-  digitalWrite(13, LOW);
-  //========================gui tap lenh AT cho ESP 8266 de cai dat cac tham so cho WiFi================================
-  guidulieu("AT+RST\r\n", 2000, DEBUG); // reset module
-  guidulieu("AT+CWMODE=1\r\n", 1000, DEBUG); // Chọn chức năng client cho esp
-  guidulieu("AT+CWJAP=\"DHT_CODER\",\"arduino\"\r\n", 1000, DEBUG); // Kết nối với wifi
-  guidulieu("AT+CIFSR\r\n", 1000, DEBUG); // xem ip là bn
-  guidulieu("AT+CIPMUX=1\r\n", 1000, DEBUG); // configure for multiple connections
-  guidulieu("AT+CIPSERVER=1,80\r\n", 1000, DEBUG); // Mở cổng 80
+char host[] = "138.197.46.187";  //Địa chỉ IP dịch vụ, hãy thay đổi nó theo địa chỉ IP Socket server của bạn.
+int port = 3484;                  //Cổng dịch vụ socket server do chúng ta tạo!
+ 
+//từ khóa extern: dùng để #include các biến toàn cục ở một số thư viện khác. Trong thư viện SocketIOClient có hai biến toàn cục
+// mà chúng ta cần quan tâm đó là
+// RID: Tên hàm (tên sự kiện
+// Rfull: Danh sách biến (được đóng gói lại là chuối JSON)
+extern String RID;
+extern String Rfull;
+
+
+
+void setup()
+{
+  Serial.begin(115200);
+  delay(10);
+  Serial.println();
+  Serial.print("Ket noi mang wifi: ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+// kets noi wifi
+  while(WiFi.status()!= WL_CONNECTED){
+    delay(500);
+    Serial.print('.');
+  }
+
+  Serial.println();
+  Serial.println("da ket noi wifi");
+  Serial.println(F("dia chi ip duoc su dung:"));
+  Serial.println(WiFi.localIP());
+
+  if(!client.connect(host,port)) {
+    Serial.println(F("Ket no den socket server that bai!"));
+    return;
+  }
+  else
+  {
+    Serial.println("Ket no den socket server ok!");
+  }
+// gui suwj kieejn connection den socket server
+  if(client.connected()) {
+    client.send("connection", "message", "Modul wifi đã kết nối.");
+  }
+
 }
 
-void loop() {
-  while (esp8266.available()) {
-    IncomingChar(esp8266.read());
-  }
-
-  if (x) {
-    // Đây là giao diện web page viết dưới dạng html...các bạn có thể dễ dàng edit
-
-    String html = "<HTML>"
-                  "<HEAD><TITLE>DO_HUU_TOAN_IOT</TITLE>"
-                  "<form action=\"\" method=\"get\">"
-                  "<input type=\"radio\" name=\"LED\" value=\"RED_ON\"> LED_ON"
-                  "<input type=\"radio\" name=\"LED\" value=\"RED_OFF\"> LED_OFF<br>"
-                  "<input type=\"submit\" value=\"Submit\">"
-                  "</form>"
-                  "</BODY></HTML>";
-
-    String cipsend = "AT+CIPSEND=0,"; //gui chuoi data qua Wifi
-
-    cipsend += html.length();
-    cipsend += "\r\n";
-    guidulieu(cipsend, 1000, DEBUG);
-    guidulieu(html, 1000, DEBUG);
-    guidulieu("AT+CIPCLOSE=0\r\n", 1000, DEBUG);
-    x = 0;
-  }
-
-}
-
-void IncomingChar(const byte InChar) {
-  static char InLine[300]; //Hạn chế ký tự
-  static unsigned int Position = 0;
-
-  switch (InChar) {
-    case '\r': //Cái này là xuống dòng...cho linux
-      break;
-
-    case '\n': // xuống dòng cho window...( kết thúc bảng tin )
-      InLine[Position] = 0;
-      ProcessCommand(String(InLine));
-      Position = 0;
-      break;
-
-    default:
-      InLine[Position++] = InChar;
-
-  }
-}
-
-void ProcessCommand(String InLine) {
-  Serial.println("InLine: " + InLine);
-  esp8266.print("InLine: " + InLine);
-
-  if (InLine.startsWith("+IPD,")) {
-
-    x = 1;
-  }
-  // lện String.indexOf(kytu)...chả về vị trí của kytu trong chuỗi String...Nếu giá trị trả về là -1...tức là kytu không xuất hiện trong chuỗi String
-  if (InLine.indexOf("RED_OFF") != -1) {
-
-    digitalWrite(12, LOW);
-    digitalWrite(13, LOW);
-  }
-
-  if (InLine.indexOf("RED_ON") != -1) {
-
-    digitalWrite(13, HIGH);
-  }
-}
-
-String guidulieu(String lenh,
-                 const int thoigian, boolean debug) {
-  String chuoigiatri = "";
-
-  esp8266.print(lenh); // send the read character to the esp8266
-
-  long int time = millis();
-
-  while ((time + thoigian) > millis()) {
-    while (esp8266.available()) {
-
-      // The esp has data so display its output to the serial window
-      char c = esp8266.read(); // read the next character.
-      chuoigiatri += c;
+void loop()
+{
+    delay(10000);
+    client.send("atime", "message", " Time please?");
+    
+  if (client.monitor()) {
+ 
+        //in ra serial cho Arduino
+        mySerial.print(RID);
+        mySerial.print('\r');
+        mySerial.print(Rfull);
+        mySerial.print('\r');
+ 
+        //in ra serial monitor
+        Serial.print(RID);
+        Serial.print(' ');
+        Serial.println(Rfull);
+        
+        //Kiểm tra xem còn dư bao nhiêu RAM, để debug
+        uint32_t free = system_get_free_heap_size();
+        Serial.println(free);
     }
-  }
+    //Serial.println(client.connected());
+ 
+    //Kết nối lại!
+    if (!client.connected()) {
+      client.reconnect(host, port);
+    }
 
-  if (debug) {
-    Serial.print(chuoigiatri);
-    esp8266.print(chuoigiatri);
+// Mất kết nối, thì kết nối lại
+  if(!client.connected()) {
+    client.reconnect(host, port);
+    client.send("connection", "message", "Modul wifi đã kết nối.");
   }
-
-  return chuoigiatri;
 }

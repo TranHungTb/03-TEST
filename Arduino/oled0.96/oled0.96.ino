@@ -114,7 +114,7 @@ const unsigned char PROGMEM heart3[]={
   
 void setup()   {                  
   //default address is 0x3D.
-  GOFoled.init(A4);
+  GOFoled.init(0x3C);
   // init done
   
   GOFoled.display(); // show splashscreen

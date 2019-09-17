@@ -12,18 +12,18 @@
 //
  
 #include <SoftwareSerial.h>
-SoftwareSerial ESPserial(10,11); // RX | TX
+SoftwareSerial ESPserial(2,3); // RX | TX
  
 void setup() 
 {
-    Serial.begin(115200);     // communication with the host computer
+    Serial.begin(9600);     // communication with the host computer
     //while (!Serial)   { ; }
  
     // Start the software serial for communication with the ESP8266
-    ESPserial.begin(115200);  
+    ESPserial.begin(9600);  
  
     Serial.println("");
-    Serial.println("Remember to to set Both NL & CR in the serial monitor.");
+    Serial.println("Bắt đầu gửi lệnh.");
     Serial.println("Ready");
     Serial.println("");    
 }

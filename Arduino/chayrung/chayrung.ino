@@ -52,8 +52,8 @@ void setup()
   Gsm_Init();                                                 // Cau hinh module Sim800C
   Gsm_MakeCall(myphone);                          // Test cuoc goi
   // Gsm_MakeSMS(myphone,"I'm a test");       // Test tin nhan
-//  ConnectServer("138.197.46.187", "1346");
-  //  mySerial.println("at+cipstart=\"tcp\",\"138.197.46.187\",\"1349\"");
+  ConnectServer("138.197.46.187", "1347/level");
+//    mySerial.println("at+cipstart=\"tcp\",\"138.197.46.187\",\"1347/level\"");
   //  delay(2000);
 
 
@@ -177,82 +177,7 @@ void baochay()
     delay(100);
   }
 }  
-  
-//    Index = returned.indexOf("cap 1");
-//    if (Index >= 0)                   // Neu tim thay "LAMP_ON" trong RxBuff
-//     {
-//        Index = -1; 
-//                                              
-//        Serial.println("Báo cháy cấp 1.");  
-//        myservo.write(18);
-//        delay(100);
-//       
-//        returned = "";                                   // Xoa bo dem 
-//     }
-//     else
-//      {
-//        Index = returned.indexOf("cap2");
-//        if (Index >= 0)                   // Neu tim thay "LAMP_ON" trong RxBuff
-//         {
-//            Index = -1; 
-//                                                  
-//            Serial.println("Báo cháy cấp 2.");  
-//            myservo.write(54);
-//        delay(100);
-//           
-//            returned = "";                                   // Xoa bo dem 
-//         }
-//         else
-//          {
-//           Index = returned.indexOf("cap3");
-//            if (Index >= 0)                   // Neu tim thay "LAMP_ON" trong RxBuff
-//             {
-//                Index = -1; 
-//                                                      
-//                Serial.println("Báo cháy cấp 3.");  
-//                myservo.write(90);
-//                delay(100);
-//               
-//                returned = "";                                   // Xoa bo dem 
-//             }
-//             else
-//              {
-//               Index = returned.indexOf("cap4");
-//                if (Index >= 0)                   // Neu tim thay "LAMP_ON" trong RxBuff
-//                 {
-//                    Index = -1; 
-//                                                          
-//                    Serial.println("Báo cháy cấp 4.");  
-//                    myservo.write(126);
-//                    delay(100);
-//                   
-//                    returned = "";                                   // Xoa bo dem 
-//                 }
-//               else
-//              {
-//               Index = returned.indexOf("cap5");
-//                if (Index >= 0)                   // Neu tim thay "LAMP_ON" trong RxBuff
-//                 {
-//                    Index = -1; 
-//                                                          
-//                    Serial.println("Báo cháy cấp 5.");  
-//                    myservo.write(162);
-//                    delay(100);
-//                   
-//                    returned = "";                                   // Xoa bo dem 
-//                 }
-//                 else
-//                  {
-//                   Serial.println("Không tìm thấy cấp độ báo cháy."); 
-//                   returned = "";   
-//                  } 
-//           } 
-//         } 
-//       }
-//      }
-//      returned = "";                                                                   // Xoa bo dem
-//                                                   // Dong Relay de bat den // Bat bong den
-//    }
+ 
 
 
 void serialEvent() {                                          // Chuong trinh ngat nhan du lieu sự kiện trả về
@@ -336,81 +261,84 @@ void Gsm_MakeSMS(String phone, String content)  //gửi sms
 }
 
 
-//void ConnectServer(String ip, String port)    //kết nối tới server
-//{
-//  mySerial.println("AT+CGATT?");  //kiểm tra trạng thái GPRS
-//  delay(2000);
-//  serialEvent();   
-//  Index = returned.indexOf("1");
-//  if (Index >= 0)                  
-//  {
-//    Index = -1; 
-//    digitalWrite(RELAY, LOW);                                           
-//    Serial.println("Đã bật GPRS:" + returned);  
-//    returned = "";                                   
-//  }
-//    else
-//    {
-//    Index = -1; 
-//    digitalWrite(RELAY, HIGH); 
-//    Serial.println("Chưa bật GPRS:" + returned);
-//    runUtilOk("AT+CGATT=1", "1", 2000);
-//    returned = "";
-//    }
-//  
-//  mySerial.println("AT+CIPMUX?");     // Cài Sim800A ở chế độ Single Connection.
-//  delay(2000);
-//  updateSerial();
-//  mySerial.println("AT+CIPMode?");   //Bắt đầu tác vụ và đặt APN, TÊN NGƯỜI DÙNG, PASSWORD
-//  delay(2000);
-//  updateSerial();
-////  runUtilOk("AT+CSTT=\"CMNET\"","OK",2000);  //;Bắt đầu tác vụ và đặt APN, TÊN NGƯỜI DÙNG, PASSWORD
+void ConnectServer(String ip, String port)    //kết nối tới server
+{
+  mySerial.println("AT+CGATT?");  //kiểm tra trạng thái GPRS
+  delay(2000);
+  serialEvent();   
+  Index = returned.indexOf("1");
+  if (Index >= 0)                  
+  {
+    Index = -1; 
+    digitalWrite(RELAY, LOW);                                           
+    Serial.println("Đã bật GPRS:" + returned);  
+    returned = "";                                   
+  }
+    else
+    {
+    Index = -1; 
+    digitalWrite(RELAY, HIGH); 
+    Serial.println("Chưa bật GPRS:" + returned);
+    runUtilOk("AT+CGATT=1", "1", 2000);
+    returned = "";
+    }
+  
+  mySerial.println("AT+CIPMUX?");     // Cài Sim800A ở chế độ Single Connection.0 Kết nối IP đơn1 kết nối nhiều IP
+  delay(2000);
+  updateSerial();
+  mySerial.println("AT+CIPMode?");   //Bắt đầu tác vụ và đặt APN, TÊN NGƯỜI DÙNG, PASSWORD
+  delay(2000);
+  updateSerial();
+//  runUtilOk("AT+CSTT=\"CMNET<CR><LF>\"","OK",2000);  //;Bắt đầu tác vụ và đặt APN, TÊN NGƯỜI DÙNG, PASSWORD
+  mySerial.println("AT+CSTT?");   //Bắt đầu tác vụ và đặt APN, TÊN NGƯỜI DÙNG, PASSWORD
+  delay(2000);
+  updateSerial();
 //  runUtilOk("AT+CIICR","OK",2000);   //Kết nối không dây với GPRS
-//  mySerial.println("AT+CIFSR");   //Nhận địa chỉ IP cục bộ
-//  delay(2000);
-//  updateSerial();
-//  //  chaylai();
-//  ip:
-//  mySerial.println("AT+CIPSTART=\"TCP\",\"" + ip + "\",\"" + port + "\"");   //Kết nối với Server theo TCP, Sim800A đóng vai trò TCP Client
-//  delay(2000);;
-//  serialEvent();   
-//  Index = returned.indexOf("OK");
-//  if (Index >= 0)                   // Neu tim thay
-//  {
-//    Index = -1; 
-//    digitalWrite(RELAY, LOW);                                           
-//    Serial.println("Thành công: " + returned);  
-//    returned = "";                        // Xoa bo dem
-//    delay(3000);
-//    serialEvent();   
-//    Index = returned.indexOf("CONNECT OK");
-//    if (Index >= 0)                   // Neu tim thay 
-//    {
-//      Index = -1; 
-//      digitalWrite(RELAY, LOW);                                           
-//      Serial.println("Connect Ok: " + returned);  
-//      returned = "";         
-//    }
-//    else
-//    {
-//      Index = -1; 
-//      digitalWrite(RELAY, HIGH); 
-//      Serial.println("Thất bại, gửi lại: " + returned);
-//      returned = "";
-//      goto ip;
-//    }
-//  }
-//  else
-//    {
-//    Index = -1; 
-//    digitalWrite(RELAY, HIGH); 
-//    Serial.println("Thất bại, gửi lại: " + returned);
-//    returned = "";
-//    goto ip;
-//    }
-//  runUtilOk("AT+CIPSTART=\"TCP\",\"" + ip + "\",\"" + port + "\"", "server", 5000); 
-//}
-//
+  mySerial.println("AT+CIFSR");   //Nhận địa chỉ IP cục bộ
+  delay(2000);
+  updateSerial();
+  //  chaylai();
+  ip:
+  mySerial.println("AT+CIPSTART=\"TCP\",\"" + ip + "\",\"" + port + "\"");   //Kết nối với Server theo TCP, Sim800A đóng vai trò TCP Client
+  delay(2000);;
+  serialEvent();   
+  Index = returned.indexOf("OK");
+  if (Index >= 0)                   // Neu tim thay
+  {
+    Index = -1; 
+    digitalWrite(RELAY, LOW);                                           
+    Serial.println("Thành công: " + returned);  
+    returned = "";                        // Xoa bo dem
+    delay(3000);
+    serialEvent();   
+    Index = returned.indexOf("CONNECT OK");
+    if (Index >= 0)                   // Neu tim thay 
+    {
+      Index = -1; 
+      digitalWrite(RELAY, LOW);                                           
+      Serial.println("Connect Ok: " + returned);  
+      returned = "";         
+    }
+    else
+    {
+      Index = -1; 
+      digitalWrite(RELAY, HIGH); 
+      Serial.println("Thất bại, gửi lại: " + returned);
+      returned = "";
+      goto ip;
+    }
+  }
+  else
+    {
+    Index = -1; 
+    digitalWrite(RELAY, HIGH); 
+    Serial.println("Thất bại, gửi lại: " + returned);
+    returned = "";
+    goto ip;
+    }
+  runUtilOk("AT+CIPSTART=\"TCP\",\"" + ip + "\",\"" + port + "\"", "server", 5000); 
+}
+
 //void disconnected()
 //{
 //  runUtilOk("AT+CGATT=0", "OK", 2000);
