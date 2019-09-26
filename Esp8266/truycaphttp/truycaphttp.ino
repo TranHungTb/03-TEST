@@ -72,30 +72,30 @@ void loop() {
           Serial.println(payload);
           int val=1;
           if (payload.indexOf("level:1") != -1) {
-            val = 1;
+            val = 5;
             // vô hiệu hóa D0( chân led D0 có sẵn nối dương nên ta kích 1 thì led tắt)
-            myservo.write(val*2*18-18);
+            myservo.write(154);
           }
           
           else if (payload.indexOf("level:2") != -1) {
-            val = 2;
+            val = 4;
             // Bật D0
-            myservo.write(val*2*18-18);
+            myservo.write(118);
           }
           else if (payload.indexOf("level:3") != -1) {
             val = 3;
             // Bật D0
-            myservo.write(val*2*18-18);
+            myservo.write(77);
           }
           else if (payload.indexOf("level:4") != -1) {
-            val = 4;
+            val = 2;
             // Bật D0
-            myservo.write(val*2*18-18);
+            myservo.write(36);
           }
           else if (payload.indexOf("level:5") != -1) {
-            val = 5;
+            val = 1;
             // Bật D0
-            myservo.write(val*2*18-18);
+            myservo.write(0);
           }
           else {
             Serial.println("[-] Yêu cầu không hợp lệ");
@@ -112,5 +112,5 @@ void loop() {
     }
   }
 
-  delay(10000);
+  delay(1000);
 }

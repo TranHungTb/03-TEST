@@ -1,17 +1,24 @@
+#include <SoftwareSerial.h>
+
+SoftwareSerial mySerial(2, 3);
 void setup()   {   
     Serial.begin(9600);
-    pinMode(A3,INPUT_PULLUP); 
-    pinMode(A2,INPUT_PULLUP); 
-    pinMode(A1,INPUT_PULLUP);       
-    pinMode(A0,INPUT_PULLUP); 
+    mySerial.begin(9600);
+    Serial.println();
+    Serial.println("Initializing...");
 }
-int x=60;//hoành độ khảo sát
-byte button;
 void loop(){
-    if (button==3) {
-        x--;// sang trái
-    } else if(button==1) {
-        x++;//sang phải
-    }
-    Serial.println(x);
+
+    
+  while (Serial.available())
+  {
+    mySerial.write(Serial.read());//Forward what Serial received to Software Serial Port
+    
+  }
+
+  while (mySerial.available())
+  {
+    Serial.write(mySerial.read());//Forward what Software Serial received to Serial Port
+    
+  }
 }
