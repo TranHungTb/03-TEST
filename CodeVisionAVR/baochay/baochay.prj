@@ -7,9 +7,9 @@ A=
 C=
 D=9/5/2019
 Files=1
-OpenedFiles=2
+OpenedFiles=1
 OF1=baochay.c
-Active1=0
+Active1=1
 DebugOutputListFilesDirectory=Debug\List
 DebugOutputObjectFilesDirectory=Debug
 DebugOutputExecutableFilesDirectory=Debug\Exe
@@ -528,7 +528,7 @@ Row=0
 Column=0
 ScrollPosX=0
 ScrollPosY=0
-TimeStamp=1328110715
+TimeStamp=1330073062
 [BookmarksFoldedCode]
 Files=2
 F1=baochay.c
@@ -549,8 +549,6 @@ BK6=-1
 BK7=-1
 BK8=-1
 BK9=-1
-[FoldedCode1]
-Blocks=0
 [Bookmarks2]
 TimeStamp=1327861597
 Row=67
@@ -568,4 +566,6 @@ BK7=-1
 BK8=-1
 BK9=-1
 [FoldedCode2]
+Blocks=0
+[FoldedCode1]
 Blocks=0

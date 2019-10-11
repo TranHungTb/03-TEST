@@ -1,6 +1,6 @@
 
 #include <SoftwareSerial.h>
-
+#include <Sodaq_wdt.h>
 #include <Servo.h>      // Thư viện điều khiển servo
 
 // Khai báo đối tượng myservo dùng để điều khiển servo
@@ -11,16 +11,18 @@ SoftwareSerial mySerial(2, 3); //SIM800L Tx & Rx is connected to Arduino #3 & #2
 
 const String myphone = "0972154901";     // Thay so cua ban vao day
 
-int n;
 int servoPin = A0;
 int Index= -1;  
+int addr = 0;//địa chỉ EEPROM mà ta sẽ lưu đầu tiên
+
+short int i;
+short int level = 180;
 
 String cap ="";              
 String tk = "";           //thông tin tài khoản
 String returned = "";       // Tat ca du lieu nhan ve tu module sim deu duoc luu trong day
 String sdt="";             // sđt nhắn đến  
                          
-boolean newline = false;
 
 void baochay();             // hàm thực hiện quay bảng
 void serialEvent();         // bắt sự kiện
@@ -37,21 +39,17 @@ void setup()
 {
 
   Serial.begin(9600);
-
   mySerial.begin(9600);
   myservo.attach(servoPin);
-  myservo.write(158);
-  Serial.println("Initializing...");
   
-
-  delay(2000);                                              // Đợi module sim kiểm tra kết nối mạng GSM
-
-
+  Serial.println("Initializing...");
+  pinMode(4,OUTPUT);
+  digitalWrite(4,1);
+                                               // Đợi module sim kiểm tra kết nối mạng GSM
+  myservo.write(level);
+  delay(2000); 
+  digitalWrite(4,0);
   Gsm_Init();   
-//  set_http();
-  // Cau hinh module Sim800C
-//  Gsm_MakeCall(myphone);                          // Test cuoc goi
-  // Gsm_MakeSMS(myphone,"I'm a test");       // Test tin nhan
 
 Serial.println("Starti...");
 }
@@ -61,7 +59,7 @@ void loop() {
   serialEvent();  
   delay(20);    
 
-  if (returned.indexOf("cap") >= 0)                                                  // Neu tim thay "LAMP_ON" trong RxBuff
+  if (returned.indexOf("Cap") >= 0||returned.indexOf("cap") >= 0||returned.indexOf("6300610070") >= 0||returned.indexOf("4300610070") >= 0 )                                                  // Neu tim thay "LAMP_ON" trong RxBuff
   {
     
                                                      
@@ -79,8 +77,7 @@ void loop() {
  }
  }
 }
-
-  
+ 
 
 
 
@@ -88,47 +85,56 @@ void loop() {
  * Input: string gia tri lay tu myserial
  * Output: cap do chay
  */
-int getLevel(String dataIncludeLevel) {
-  if (dataIncludeLevel.indexOf("00630061007000200035") >= 0||dataIncludeLevel.indexOf("cap 5") >= 0||dataIncludeLevel.indexOf("Cap 5") >= 0)  {
+void getLevel(String dataIncludeLevel) {
+  if (dataIncludeLevel.indexOf("00630061007000200035") >= 0||dataIncludeLevel.indexOf("00430061007000200035") >= 0||dataIncludeLevel.indexOf("cap 5") >= 0||dataIncludeLevel.indexOf("Cap 5") >= 0)  {
+    cap = "Cap 5 ";
+    level = 23;  // cấp 5
+  }
+  else{
+  if (dataIncludeLevel.indexOf("00630061007000200034") >= 0||dataIncludeLevel.indexOf("00430061007000200034") >= 0||dataIncludeLevel.indexOf("cap 4") >= 0||dataIncludeLevel.indexOf("Cap 4") >= 0)  {
+    cap = "Cap 4 ";
+    level = 57;  // cấp 4
+  }
+  else{
+  if (dataIncludeLevel.indexOf("00630061007000200033") >= 0||dataIncludeLevel.indexOf("00430061007000200033") >= 0||dataIncludeLevel.indexOf("cap 3") >= 0||dataIncludeLevel.indexOf("Cap 3") >= 0)  {
+    cap = "Cap 3 ";
+    level = 72+26;  // cấp 3
+  }
+  else{
+  if (dataIncludeLevel.indexOf("00630061007000200032") >= 0||dataIncludeLevel.indexOf("00430061007000200032") >= 0||dataIncludeLevel.indexOf("cap 2") >= 0||dataIncludeLevel.indexOf("Cap 2") >= 0)  {
+    cap = "Cap 2 ";
+    level = 137;  // cấp 2
+  }
+  else{
+  if (dataIncludeLevel.indexOf("00630061007000200031") >= 0||dataIncludeLevel.indexOf("00430061007000200031") >= 0||dataIncludeLevel.indexOf("cap 1") >= 0||dataIncludeLevel.indexOf("Cap 1") >= 0)  {
+    cap = "Cap 1 ";
+    level = 180;  // cấp 1
+  }
+  else{
+  level = -1;
+}}}}}}
 
-    return 0; // cấp 5
-  }
-  if (dataIncludeLevel.indexOf("00630061007000200034") >= 0||dataIncludeLevel.indexOf("cap 4") >= 0||dataIncludeLevel.indexOf("Cap 4") >= 0)  {
-
-    return 36;  // cấp 4
-  }
-  if (dataIncludeLevel.indexOf("00630061007000200033") >= 0||dataIncludeLevel.indexOf("cap 3") >= 0||dataIncludeLevel.indexOf("Cap 3") >= 0)  {
-  
-    return 77;  // cấp 3
-  }
-  if (dataIncludeLevel.indexOf("00630061007000200032") >= 0||dataIncludeLevel.indexOf("cap 2") >= 0||dataIncludeLevel.indexOf("Cap 2") >= 0)  {
-   
-    return 118;  // cấp 2
-  }
-  if (dataIncludeLevel.indexOf("00630061007000200031") >= 0||dataIncludeLevel.indexOf("cap 1") >= 0||dataIncludeLevel.indexOf("Cap 1") >= 0)  {
- 
-    return 158;  // cấp 1
-  }
-  return -1;
-}
 
 void baochay()
 {
   getLevel(returned);
-  int level = getLevel(returned);
-  cap = returned.substring(50, 100);
+//   int lever = getLevel(returned);
+//  cap = returned.substring(50, 100);
   if (level == -1) {
     Serial.println("Không tìm thấy cấp độ báo cháy." + returned); 
     returned = "";   
   } 
   else {
+    digitalWrite(4,1);
     Serial.println("Thực hiện lệnh:" + cap + "Ok");  
     myservo.write(level);
-    Check_Account();
-    Gsm_MakeSMS(sdt, "Thực hiện lệnh:" + cap + "Ok. " + tk );   
-    returned = ""; 
-    
+    Check_Account(); // kieerm tra tk
+    Gsm_MakeSMS(sdt, "Lenh bao chay:" + cap + "Ok.\r\n" + tk );  
+    delay(1000); // để động cơ đổi vị trí 
+    returned = "";   
+    digitalWrite(4,0);
   }
+  
 }  
  
 
@@ -162,17 +168,28 @@ void runUtilOk(String cmd, String okCondition, int delays) //s sánh phản hồ
   Index = returned.indexOf(okCondition);
   if (Index >= 0)                   // Neu tim thay "LAMP_ON" trong RxBuff
   {
-    Index = -1;                                        
+    Index = -1;          
+    i = 0;                              
     Serial.println("Thành công: " + returned);  
-    returned = "";                                   // Xoa bo dem
+    returned = "";     
+    
   }
     else
     {
     Index = -1; 
+    i++;
     Serial.println("Thất bại, gửi lại: " + returned);
     returned = "";
-    runUtilOk(cmd, okCondition, delays);
+    if(i > 5){
+      sodaq_wdt_enable(WDT_PERIOD_2X);
     }
+    else{
+     runUtilOk(cmd, okCondition, delays); 
+    }
+    
+    
+    }
+    
 }
 
 
@@ -214,7 +231,18 @@ void Check_Account(){
     Check_Account();
   }
   Serial.println("Kiểm tra tài khoản: " + returned); 
-  tk = returned.substring(33, 170); 
+  tk = returned.substring(36, 130); 
   Serial.println("Số tài khoản: " + tk);
   mySerial.println("ATH");
+}
+
+void doisdt(String value){
+  EEPROM.write(addr, value);
+  sdt = EEPROM.read(address);
+  addr = addr + 1;
+  if (addr == 512){
+  addr = 0;}
+ 
+  delay(5); // delay 5ms để trước khi lưu giá trị tiếp theo
+  
 }

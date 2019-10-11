@@ -38,7 +38,7 @@
 Servo myservo;          
  int pos = 0;
 int bientro = 3;       // Khai báo chân analog đọc biến trở điều khiển servo
-int servoPin = D1;       // Khai báo chân điều khiển servo
+int servoPin = A0;       // Khai báo chân điều khiển servo
  
 void setup ()
 {
@@ -47,19 +47,18 @@ void setup ()
     
     Serial.begin(9600); // Mở giao tiếp Serial ở baudrate 9600
 }
- 
-void loop ()
-{
-  myservo.write(0);
+ void loop() { 
   delay(5000);
-    myservo.write(36);
+    myservo.write(36+15);
   delay(5000);
-    myservo.write(76);
+    myservo.write(72+20);
   delay(5000);
-  myservo.write(118);
+  myservo.write(130);
     delay(5000);
-  myservo.write(154);
+  myservo.write(175);
     delay(5000);
+
+    
 //   for ( pos = 0; pos <= 360; pos += 1) {
 // 
 //    myservo.write(pos);
@@ -76,5 +75,5 @@ void loop ()
 //    Serial.println();
 //    delay(100);
 //  }
-  delay(5000);
+//  delay(5000);
 }
