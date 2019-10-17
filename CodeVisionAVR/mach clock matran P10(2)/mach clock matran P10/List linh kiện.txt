@@ -1,0 +1,25 @@
+﻿2 tấm led matrix P10 130k 1 tấm
+Nguồn 5V-6A
+dây kết nối led matrix
+-------------------------------
+Vi điều khiển Atmega328 + đế : SL1
+Thạch anh 16Mhz: SL1 ( nhớ là 16M chứ k phải 20M như video)
+IC thời gian DS1307 + đế :SL1
+Pin Cr1202 + đế : SL1
+Thạch anh 32.768 : SL1
+Tụ 33p hoặc 22p: SL1
+Nút nhấn 4 chân : SL3
+Tran A1015
+còi chíp 5V
+Trở dán 10k, 220R
+Mắt thu hồng ngoại 3 chân : SL1
+cảm biến nhiệt độ DS1307 SL1
+jump cái 
+------------------------------
+Nạp code hex trong thư mục : "code atmega328P" --> exe --> code.hex
+Fuse CKSEL3:0 = 0110
+-----------------------------
+Video hướng dẫn :  https://youtu.be/q2KEfFb4hB8
+Bài viết hướng dẫn : http://gocdiy.com/tim-hieu-module-p10-va-ung-dung-lam-dong-ho-so.html
+Mua mạch tại : http://gocdiy.com/shopmach.html
+liên hệ : 0169 473 3311 hoặc mail: daonguyen20798@gmail.com

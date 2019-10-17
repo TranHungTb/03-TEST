@@ -16,7 +16,7 @@ int Index= -1;
 int addr = 0;//địa chỉ EEPROM mà ta sẽ lưu đầu tiên
 
 short int i;
-short int level = 180;
+short int level = 170;
 
 String cap ="";              
 String tk = "";           //thông tin tài khoản
@@ -103,12 +103,12 @@ void getLevel(String dataIncludeLevel) {
   else{
   if (dataIncludeLevel.indexOf("00630061007000200032") >= 0||dataIncludeLevel.indexOf("00430061007000200032") >= 0||dataIncludeLevel.indexOf("cap 2") >= 0||dataIncludeLevel.indexOf("Cap 2") >= 0)  {
     cap = "Cap 2 ";
-    level = 137;  // cấp 2
+    level = 127;  // cấp 2
   }
   else{
   if (dataIncludeLevel.indexOf("00630061007000200031") >= 0||dataIncludeLevel.indexOf("00430061007000200031") >= 0||dataIncludeLevel.indexOf("cap 1") >= 0||dataIncludeLevel.indexOf("Cap 1") >= 0)  {
     cap = "Cap 1 ";
-    level = 180;  // cấp 1
+    level = 170;  // cấp 1
   }
   else{
   level = -1;
@@ -128,8 +128,8 @@ void baochay()
     digitalWrite(4,1);
     Serial.println("Thực hiện lệnh:" + cap + "Ok");  
     myservo.write(level);
-    Check_Account(); // kieerm tra tk
-    Gsm_MakeSMS(sdt, "Lenh bao chay:" + cap + "Ok.\r\n" + tk );  
+//    Check_Account(); // kieerm tra tk
+//    Gsm_MakeSMS(sdt, "Lenh bao chay:" + cap + "Ok.\r\n" + tk );  
     delay(1000); // để động cơ đổi vị trí 
     returned = "";   
     digitalWrite(4,0);
@@ -234,15 +234,4 @@ void Check_Account(){
   tk = returned.substring(36, 130); 
   Serial.println("Số tài khoản: " + tk);
   mySerial.println("ATH");
-}
-
-void doisdt(String value){
-  EEPROM.write(addr, value);
-  sdt = EEPROM.read(address);
-  addr = addr + 1;
-  if (addr == 512){
-  addr = 0;}
- 
-  delay(5); // delay 5ms để trước khi lưu giá trị tiếp theo
-  
 }

@@ -1,0 +1,64 @@
+RAM Allocation
+Variable                                                          Address   Size
+--------------------------------------------------------------------------------
+thu                                                               0x0300       1
+ngay                                                              0x0301       1
+thang                                                             0x0302       1
+nam                                                               0x0303       1
+t1                                                                0x0304       1
+t2                                                                0x0305       1
+t3                                                                0x0306       1
+t4                                                                0x0307       1
+t5                                                                0x0308       1
+t6                                                                0x0309       1
+t7                                                                0x030A       1
+giaycu                                                            0x030B       1
+ngay_al                                                           0x030C       1
+thang_al                                                          0x030D       1
+trangthaiauto                                                     0x030E       1
+nhietdo                                                           0x030F       2
+giobt                                                             0x0311       1
+phutbt                                                            0x0312       1
+trangthaibaothuc                                                  0x0313       1
+bugio                                                             0x0314       1
+am                                                                0x0315       1
+IRI                                                               0x0316       1
+lenhIR                                                            0x0317       1
+lenhIRcu                                                          0x0318       1
+chedohoclenh                                                      0x0319       1
+giatri                                                            0x031A       4
+nut                                                               0x031E       1
+hieuungchuyengiay                                                 0x031F       1
+cobaothoat                                                        0x0320       1
+ngaysinhnhat                                                      0x0321       1
+thangsinhnhat                                                     0x0322       1
+cobaosinhnhat                                                     0x0323       1
+trangthaisinhnhat                                                 0x0324       1
+qtrN                                                              0x0325       2
+halfN                                                             0x0327       2
+eighthN                                                           0x0329       2
+wholeN                                                            0x032B       2
+sixteenN                                                          0x032D       2
+thirtyTwoN                                                        0x032F       2
+sixtyFourN                                                        0x0331       2
+sixN                                                              0x0333       2
+twelveN                                                           0x0335       2
+twentyFourN                                                       0x0337       2
+bodem                                                             0x0339       1
+ma                                                                0x033A     128
+
+EEPROM Allocation
+Variable                                                          Address   Size
+--------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                          Register  Size
+--------------------------------------------------------------------------------
+dem                                                               R3,R4        2
+dem1                                                              R5,R6        2
+chonchu                                                           R7,R8        2
+dosang                                                            R10          1
+sang                                                              R11,R12      2
+gio                                                               R9           1
+phut                                                              R14          1
+giay                                                              R13          1

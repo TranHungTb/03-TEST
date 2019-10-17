@@ -1,22 +1,49 @@
-int incomingAudio;
+char a[18]="";
+int i; String reportString = "0972154901";
+void setup() {
+  // Mở giao tiếp nối tiếp và đợi cổng mở:
+  Serial.begin(9600);
+  Serial.println("\n\nString charAt() and setCharAt():");
 
-void setup(){
-  Serial.begin(2000000);
-  for(int i=0; i<8; i++){
-    pinMode(i,OUTPUT);
-  }
 }
 
-void loop(){
-//  incomingAudio = analogRead(A0);
-//  Serial.println(incomingAudio);
+void loop() {
+  // tạo Chuỗi để báo cáo đọc cảm biến:
+  
+  Serial.println(reportString);
+   Serial.print("\n\nreport: ");
+Serial.println(reportString.length());
 
-  PORTD = 0;
-  delay(1);
-  PORTD = 127;
-  delay(2);
-  PORTD = 51;
-  delay(1);
-  PORTD = 255;
-  delay(3);      
+  StringToChar(reportString);
+  delay(100);
+  delay(1000);  
+  Serial.print("  ss : ");
+
+    Serial.print(" a  : ");
+  
+      Serial.println( a); 
+  
+  while (true);
+}
+void StringToChar(String string){
+
+
+   for (i = 0; i < string.length(); i++) { 
+      // chữ số có ý nghĩa nhất của bài đọc nằm ở vị trí 15 trong báo cáoString:
+//  char mostSignificantDigit = 
+ 
+        a[i] = string.charAt(i);
+       
+        Serial.println( a[i]); 
+       delay(10); 
+    } 
+    
+  // bạn cũng có thể đặt ký tự của Chuỗi. Thay đổi: thành a = ký tự
+//  Serial.print("\n\nreport  s : ");
+//  Serial.println( s); 
+//  string.setCharAt(10, '=');
+//  Serial.println(string);
+
+
+
 }
