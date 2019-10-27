@@ -1,6 +1,6 @@
 #include <IRremote.h> // thư viện hỗ trợ IR remote
 
-const int receiverPin = 3; // chân digital 8 dùng để đọc tín hiệu
+const int receiverPin = A0; // chân digital 8 dùng để đọc tín hiệu
 IRrecv irrecv(receiverPin); // tạo đối tượng IRrecv mới
 decode_results results;// lưu giữ kết quả giải mã tín hiệu
 
